@@ -1,5 +1,4 @@
 import base64
-import json
 import os
 import datetime
 import tempfile
@@ -24,7 +23,7 @@ def make_request(url, method='GET', headers=None, data=None):
     try:
         response = requests.request(method, url, headers=headers, data=data)
         response.raise_for_status()
-        return json.loads(response.content.decode())
+        return response.json()
     except requests.HTTPError as e:
         raise HttpError(e)
     except ValueError as e:
@@ -78,4 +77,3 @@ def sign_params(params, certificate_file, private_key_file):
 
 def get_timestamp():
     return datetime.datetime.now(pytz.utc).strftime('%Y.%m.%d %H:%M:%S %z').strip()
-

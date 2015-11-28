@@ -1,5 +1,8 @@
 import uuid
-from urllib.parse import urlencode
+try:
+    from urllib.parse import urlencode
+except ImportError:
+    from urllib import urlencode
 
 import jwt
 from jwt.exceptions import InvalidTokenError
@@ -198,4 +201,3 @@ class EsiaInformationConnector:
     def get_person_documents(self, accept_schema=None):
         url = '{base}/prns/{oid}/docs?embed=(elements)'.format(base=self._rest_base_url, oid=self.oid)
         return self.esia_request(endpoint_url=url, accept_schema=accept_schema)
-
