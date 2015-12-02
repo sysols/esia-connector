@@ -201,3 +201,7 @@ class EsiaInformationConnector:
     def get_person_documents(self, accept_schema=None):
         url = '{base}/prns/{oid}/docs?embed=(elements)'.format(base=self._rest_base_url, oid=self.oid)
         return self.esia_request(endpoint_url=url, accept_schema=accept_schema)
+
+    def get_person_orgs(self, accept_schema=None):
+        url = '{base}/prns/{oid}/orgs?embed=(elements)'.format(base=self._rest_base_url, oid=self.oid)
+        return self.esia_request(endpoint_url=url, accept_schema=accept_schema)
