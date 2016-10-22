@@ -47,17 +47,27 @@ class EsiaAuth:
         """
         self.settings = settings
 
-    def get_auth_url(self, state=None):
+    def get_auth_url(self, state=None, redirect_params=None):
         """
         Return url which end-user should visit to authorize at ESIA.
         :param str or None state: identifier, will be returned as GET parameter in redirected request after auth..
+        :param dict or None redirect_params: get parameters in redirect url
         :return: url
         :rtype: str
         """
+        # TODO: add test for redirect_params parameter
+        if redirect_params:
+            redirect_uri = '{uri}?{params}'.format(
+                uri=self.settings.redirect_uri,
+                params=urlencode(sorted(redirect_params.items())))
+        else:
+            redirect_uri = self.settings.redirect_uri
+        import ipdb
+        ipdb.set_trace()
         params = {
             'client_id': self.settings.esia_client_id,
             'client_secret': '',
-            'redirect_uri': self.settings.redirect_uri,
+            'redirect_uri': redirect_uri,
             'scope': self.settings.esia_scope,
             'response_type': 'code',
             'state': state or str(uuid.uuid4()),
