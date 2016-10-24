@@ -62,8 +62,6 @@ class EsiaAuth:
                 params=urlencode(sorted(redirect_params.items())))
         else:
             redirect_uri = self.settings.redirect_uri
-        import ipdb
-        ipdb.set_trace()
         params = {
             'client_id': self.settings.esia_client_id,
             'client_secret': '',
