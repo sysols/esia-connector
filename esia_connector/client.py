@@ -40,6 +40,7 @@ class EsiaAuth:
     _ESIA_ISSUER_NAME = 'http://esia.gosuslugi.ru/'
     _AUTHORIZATION_URL = '/aas/oauth2/ac'
     _TOKEN_EXCHANGE_URL = '/aas/oauth2/te'
+    _LOGOUT_URL = '/idp/ext/Logout'
 
     def __init__(self, settings):
         """
@@ -82,6 +83,23 @@ class EsiaAuth:
         return '{base_url}{auth_url}?{params}'.format(base_url=self.settings.esia_service_url,
                                                       auth_url=self._AUTHORIZATION_URL,
                                                       params=params)
+
+    def get_logout_url(self, redirect_params=None):
+        if redirect_params:
+            redirect_uri = '{uri}?{params}'.format(
+                uri=self.settings.redirect_uri,
+                params=urlencode(sorted(redirect_params.items())))
+        else:
+            redirect_uri = self.settings.redirect_uri
+        params = {
+            'client_id': self.settings.esia_client_id,
+            'redirect_uri': redirect_uri,
+        }
+
+        return '{base_url}{logout_url}?{params}'.format(
+            base_url=self.settings.esia_service_url,
+            logout_url=self._LOGOUT_URL,
+            params=urlencode(sorted(params.items())))
 
     def complete_authorization(self, code, state, validate_token=True):
         """
